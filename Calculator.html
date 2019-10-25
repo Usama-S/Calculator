@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculator</title>
+
+    <link rel="stylesheet" href="bootstrap.min.css" />
+
+    <style>
+
+        body {
+            background-color: #d8e5e5;
+        }
+
+        .calculator {
+            height: auto;
+            background-color: #3a403f;
+            border: 2px solid #222222;
+            border-radius: 5px;
+            margin: 40px auto;
+        }
+
+        #screen {
+            height: 40px;
+            text-align: right;
+            background-color: #d4e7a8;
+            border-color: black;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .numbtn {
+            height: 40px;
+            width: 165px;
+            border: 1px solid black;
+            border-radius: 5px;
+            background-image: linear-gradient(#2f2f2f, #1e1e1e);
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            margin: 10px auto;
+            cursor: default;
+        }
+
+        .numbtnred {
+            height: 40px;
+            width: 165px;
+            border: 1px solid black;
+            border-radius: 5px;
+            background-image: linear-gradient(#ff6d82, #ff4a65);
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            margin: 10px auto;
+            cursor: default;
+        }
+    </style>
+
+
+    <script>
+        var keypressed, toclick, target;
+        /**** For Keypad Usage *****/
+        function keys() {
+            keypressed = event.key;
+
+            if ((keypressed >= 0) && (keypressed <= 9)) {
+                toclick = event.key;
+                target = document.getElementById(toclick);
+                target.click();
+            }
+            else if (keypressed == '/') {
+                toclick = event.key;
+                target = document.getElementById('div');
+                target.click();
+            }
+            else if (keypressed == '*') {
+                toclick = event.key;
+                target = document.getElementById('mul');
+                target.click();
+            }
+            else if (keypressed == '-') {
+                toclick = event.key;
+                target = document.getElementById('min');
+                target.click();
+            }
+            else if (keypressed == '+') {
+                toclick = event.key;
+                target = document.getElementById('plus');
+                target.click();
+            }
+            else if (keypressed == '.') {
+                toclick = event.key;
+                target = document.getElementById('point');
+                target.click();
+            }
+            else if (keypressed == 'Backspace') {
+                toclick = event.key;
+                target = document.getElementById('c');
+                target.click();
+            }
+            else if (keypressed == 'Delete') {
+                toclick = event.key;
+                target = document.getElementById('ce');
+                target.click();
+            }
+            else if (keypressed == 'Enter') {
+                toclick = event.key;
+                target = document.getElementById('equal');
+                target.click();
+            }
+        }
+
+    </script>
+
+</head>
+<body onkeyup="keys();">
+
+    <div class="calculator col-md-3">
+
+        <input type="text" class="col-md-12" id="screen" disabled placeholder="0" />
+
+        <div class="row">
+            <div class="col-md-9">
+
+                <div class="row">
+                    <div class="numbtnred col-md-3" onclick="calc(this);" id="ce">CE</div>
+                    <div class="numbtnred col-md-3" onclick="calc(this);" id="div">/</div>
+                    <div class="numbtnred col-md-3" onclick="calc(this);" id="mul">x</div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="numbtnred col-md-12" onclick="calc(this);" id="min" style="height: 40px; line-height: 40px;">-</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-9">
+
+                <div class="row">
+                    <div class="numbtn col-md-3" onclick="calc(this);" id="7">7</div>
+                    <div class="numbtn col-md-3" onclick="calc(this);" id="8">8</div>
+                    <div class="numbtn col-md-3" onclick="calc(this);" id="9">9</div>
+                </div>
+
+                <div class="row">
+                    <div class="numbtn col-md-3" onclick="calc(this);" id="4">4</div>
+                    <div class="numbtn col-md-3" onclick="calc(this);" id="5">5</div>
+                    <div class="numbtn col-md-3" onclick="calc(this);" id="6">6</div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="numbtnred col-md-12" onclick="calc(this);" id="plus" style="height: 100px; line-height: 100px;">+</div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-9">
+
+                <div class="row">
+                    <div class="numbtn col-md-3" onclick="calc(this);" id="1">1</div>
+                    <div class="numbtn col-md-3" onclick="calc(this);" id="2">2</div>
+                    <div class="numbtn col-md-3" onclick="calc(this);" id="3">3</div>
+                </div>
+
+                <div class="row">
+                    <div class="numbtnred col-md-3" onclick="calc(this);" id="c">C</div>
+                    <div class="numbtn col-md-3" onclick="calc(this);" id="0">0</div>
+                    <div class="numbtn col-md-3" onclick="calc(this);" id="point">.</div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="numbtn col-md-12" onclick="calc(this);" id="equal" style="height: 100px; line-height: 100px; background-image: linear-gradient(#ffb731,#ffa910)">=</div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+
+<script>
+
+    var num1 = 0; var num2 = 0; var ans = 0;
+    var sign, id, value;
+    var decimal = 1; var factor = 1;
+    var decicheck = 0;
+    var check = 0; var check1 = 0;
+    var temp = '';
+    var screen = document.getElementById('screen');
+
+    function calc(elmnt) {
+
+        id = elmnt.id;
+        value = document.getElementById(id).innerText;
+        var a = parseFloat(value);
+        var b = isNaN(a);
+        /**** Getting the First Value ****/
+        if (((b == false) && (value != '.')) || ((value == '.') && (decicheck == 0))) {
+            temp += value;
+            screen.value = temp;
+
+            if (value == '.') {
+                decicheck = 1;
+            }
+
+            if ((decicheck == 1) && (value != '.')) {
+                factor = decimal;
+                decimal += '0';
+            }
+
+        }
+
+        else {
+            /**** Clear All Function ****/
+            if (value == 'CE') {
+                num1 = 0;
+                num2 = 0;
+                temp = '';
+                sign = '';
+                check = 0;
+                decimal = 1;
+                factor = 1;
+                decicheck = 0;
+                ans = 0;
+                screen.value = '';
+            }
+            /**** Backspace Function ****/
+            else if (value == 'C') {
+                if (temp > 0) {
+                    temp = parseFloat(temp);
+                    var x = parseFloat(decimal);
+                    var y = parseFloat(factor);
+                    temp = ((temp * x) / 10 ^ 0) / y;
+                    screen.value = temp;
+                    if (decimal > 10) {
+                        decimal = decimal / 10;
+                        factor = factor / 10;
+                    }
+                    else {
+                        decimal = 1;
+                        factor = 1;
+                        decicheck = 0;
+                    }
+                }
+            }
+            /**** Deciding the Operator ****/
+            else if ((value == '/') || (value == 'x') || (value == '-') || (value == '+')) {
+                sign = value;
+                screen.value = sign;
+                if (check == 0) {
+                    num1 = parseFloat(temp);
+                    check = 1;
+                    temp = '';
+                    decicheck = 0;
+                }
+            }
+            /**** Calculating the Result ****/
+            else if (value == '=') {
+                if (check == 1) {
+                    num2 = parseFloat(temp);
+                    if (sign == '/') {
+                        ans = num1 / num2;
+                    }
+                    else if (sign == 'x') {
+                        ans = num1 * num2;
+                    }
+                    else if (sign == '-') {
+                        ans = num1 - num2;
+                    }
+                    else if (sign == '+') {
+                        ans = num1 + num2;
+                    }
+                    check = 0;
+                    temp = '';
+                }
+
+                screen.value = ans;
+            }
+        }
+    }
+
+</script>
